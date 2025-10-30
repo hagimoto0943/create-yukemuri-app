@@ -21,7 +21,6 @@ function printOnsenBanner() {
   #####*                         /##### 
     ##########/           (##########   
         #########################`;
-
   console.log(banner);
   console.log("♨️  Welcome to yukemuri.js setup!");
 }
@@ -66,6 +65,14 @@ function createPrompt() {
   return { askInput, askList, askConfirm, close: () => rl.close() };
 }
 
+async function waitForFile(file, timeout = 10000) {
+  const start = Date.now();
+  while (!fs.existsSync(file)) {
+    if (Date.now() - start > timeout) throw new Error(`Timeout waiting for ${file}`);
+    await new Promise((r) => setTimeout(r, 500));
+  }
+}
+
 async function main() {
   printOnsenBanner();
 
@@ -88,12 +95,14 @@ async function main() {
   const langFlag = lang === "TypeScript" ? "-ts" : "";
   execSync(`yarn create vite . --template ${viteTemplate}${langFlag}`, { stdio: "inherit" });
 
-  // --- API / Auth モジュール ---
+  await waitForFile("package.json");
+
   if (includeApi) {
     console.log("🔧 API/Auth モジュールをセットアップ中...");
     const pkgs = ["@yukemuri/api"];
     if (includeAuth) pkgs.push("@yukemuri/auth");
-    execSync(`yarn add ${pkgs.join(" ")}`, { stdio: "inherit" });
+
+    execSync(`yarnpkg add ${pkgs.join(" ")}`, { stdio: "inherit", cwd: process.cwd() });
 
     fs.mkdirSync("src/lib", { recursive: true });
 
