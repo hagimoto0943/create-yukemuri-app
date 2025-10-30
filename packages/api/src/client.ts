@@ -1,10 +1,17 @@
 import { ApiOptions } from "./types";
 import { AuthManager } from "@yukemuri/auth";
 
-const DEFAULT_CREDENTIALS: RequestCredentials = "include";
+const DEFAULT_CREDENTIALS: RequestCredentials = "omit";
 
 export class YukemuriClient {
-  constructor(private baseURL: string = "/api") {}
+  constructor(
+    private baseURL: string = "/api",
+    private credentials: RequestCredentials = DEFAULT_CREDENTIALS
+  ) {}
+
+  setCredentials(mode: RequestCredentials) {
+    this.credentials = mode;
+  }
 
   private async request<T>(url: string, options: ApiOptions = {}): Promise<T> {
     const {
@@ -13,7 +20,7 @@ export class YukemuriClient {
       body,
       auth,
       timeout = 10000,
-      credentials = DEFAULT_CREDENTIALS,
+      credentials = this.credentials,
     } = options;
 
     const finalHeaders: Record<string, string> = {
@@ -56,8 +63,8 @@ export class YukemuriClient {
     }
   }
 
-  get<T>(url: string, auth = false) {
-    return this.request<T>(url, { method: "GET", auth });
+  get<T>(url: string, body?: unknown, auth = false) {
+    return this.request<T>(url, { method: "GET", body, auth });
   }
 
   post<T>(url: string, body?: unknown, auth = false) {
