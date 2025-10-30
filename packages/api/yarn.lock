@@ -290,6 +290,11 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.8.tgz#958b91c991b1867ced318bedea0e215ee050726e"
   integrity sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==
 
+"@yukemuri/auth@latest":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@yukemuri/auth/-/auth-0.1.1.tgz#2b7a42aa89209cc47944b09af9d158c0816e2d92"
+  integrity sha512-BSgv0ECewI0FFcgpQb0Kcjh38aQ+fq7ukO8+nqP/8en+6Aep5AkLnTnu2Zuhcz6rYR7iNZiw5sJcKlLzY4BW9g==
+
 acorn@^8.15.0:
   version "8.15.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.15.0.tgz#a360898bc415edaac46c8241f6383975b930b816"

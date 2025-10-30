@@ -1,4 +1,5 @@
 import { ApiOptions } from "./types";
+import { AuthManager } from "@yukemuri/auth";
 
 export class YukemuriClient {
   constructor(private baseURL: string = "/api") {}
@@ -13,11 +14,8 @@ export class YukemuriClient {
 
     // 認証トークン自動付与（今後authモジュール連携予定）
     if (auth) {
-      const token =
-        typeof window !== "undefined"
-          ? localStorage.getItem("access_token")
-          : null;
-      if (token) finalHeaders["Authorization"] = `Bearer ${token}`;
+      const authHeader = AuthManager.getAuthHeader();
+      Object.assign(finalHeaders, authHeader);
     }
 
     const controller = new AbortController();

@@ -1,4 +1,5 @@
 // src/client.ts
+import { AuthManager } from "@yukemuri/auth";
 var YukemuriClient = class {
   constructor(baseURL = "/api") {
     this.baseURL = baseURL;
@@ -10,8 +11,8 @@ var YukemuriClient = class {
       ...headers
     };
     if (auth) {
-      const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
-      if (token) finalHeaders["Authorization"] = `Bearer ${token}`;
+      const authHeader = AuthManager.getAuthHeader();
+      Object.assign(finalHeaders, authHeader);
     }
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeout);
