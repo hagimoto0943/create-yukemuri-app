@@ -1,9 +1,6 @@
 # node_modules
 packages/api/node_modules
 packages/api/dist
-packages/web/node_modules
-packages/cli/node_modules
-packages/mobile/node_modules
 packages/auth/node_modules
 packages/auth/dist
 # build output
