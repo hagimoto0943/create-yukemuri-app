@@ -6,4 +6,5 @@ export type ApiOptions = {
   body?: unknown;
   auth?: boolean;
   timeout?: number;
+  credentials?: RequestCredentials;
 };

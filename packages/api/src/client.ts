@@ -1,11 +1,20 @@
 import { ApiOptions } from "./types";
 import { AuthManager } from "@yukemuri/auth";
 
+const DEFAULT_CREDENTIALS: RequestCredentials = "include";
+
 export class YukemuriClient {
   constructor(private baseURL: string = "/api") {}
 
   private async request<T>(url: string, options: ApiOptions = {}): Promise<T> {
-    const { method = "GET", headers = {}, body, auth, timeout = 10000 } = options;
+    const {
+      method = "GET",
+      headers = {},
+      body,
+      auth,
+      timeout = 10000,
+      credentials = DEFAULT_CREDENTIALS,
+    } = options;
 
     const finalHeaders: Record<string, string> = {
       "Content-Type": "application/json",
@@ -25,7 +34,7 @@ export class YukemuriClient {
       method,
       headers: finalHeaders,
       body: body ? JSON.stringify(body) : undefined,
-      credentials: "include",
+      credentials,
       signal: controller.signal,
     }).finally(() => clearTimeout(id));
 
@@ -64,22 +73,5 @@ export class YukemuriClient {
   }
 }
 
-function resolveBaseURL(): string {
-  try {
-    const meta = import.meta as { env?: Record<string, string | undefined> };
-    if (meta?.env?.PUBLIC_API_URL) {
-      return meta.env.PUBLIC_API_URL;
-    }
-  } catch {
-    // ignore - import.meta is undefined in CJS bundles
-  }
-
-  if (typeof process !== "undefined" && process.env?.PUBLIC_API_URL) {
-    return process.env.PUBLIC_API_URL;
-  }
-
-  return "/api";
-}
-
 // export singleton instance
-export const api = new YukemuriClient(resolveBaseURL());
+export const api = new YukemuriClient("/api");
