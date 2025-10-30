@@ -1,0 +1,36 @@
+{
+  "name": "@yukemuri/auth",
+  "version": "0.1.1",
+  "description": "Unified authentication manager for yukemuri.js (JWT, Cookie, OAuth, Basic, etc.)",
+  "author": "Reivo, Inc.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --dts --format esm",
+    "dev": "tsup src/index.ts --watch --dts --format esm",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "auth",
+    "jwt",
+    "cookie",
+    "oauth",
+    "yukemuri",
+    "typescript",
+    "authentication"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "^5.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "src"
+  ]
+}

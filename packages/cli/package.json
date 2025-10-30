@@ -1,0 +1,13 @@
+{
+  "name": "create-yukemuri-app",
+  "version": "0.0.10",
+  "bin": {
+    "create-yukemuri-app": "./bin/index.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
