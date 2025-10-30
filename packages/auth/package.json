@@ -1,15 +1,14 @@
 {
   "name": "@yukemuri/auth",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "description": "Unified authentication manager for yukemuri.js (JWT, Cookie, OAuth, Basic, etc.)",
-  "author": "Reivo, Inc.",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup src/index.ts --dts --format esm",
-    "dev": "tsup src/index.ts --watch --dts --format esm",
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsup src/index.ts --watch --format esm,cjs --dts",
     "clean": "rm -rf dist"
   },
   "keywords": [
@@ -31,6 +30,20 @@
   },
   "files": [
     "dist",
+    "src"
+  ],
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "declaration": true,
+    "emitDeclarationOnly": false,
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
     "src"
   ]
 }

@@ -64,5 +64,22 @@ export class YukemuriClient {
   }
 }
 
+function resolveBaseURL(): string {
+  try {
+    const meta = import.meta as { env?: Record<string, string | undefined> };
+    if (meta?.env?.PUBLIC_API_URL) {
+      return meta.env.PUBLIC_API_URL;
+    }
+  } catch {
+    // ignore - import.meta is undefined in CJS bundles
+  }
+
+  if (typeof process !== "undefined" && process.env?.PUBLIC_API_URL) {
+    return process.env.PUBLIC_API_URL;
+  }
+
+  return "/api";
+}
+
 // export singleton instance
-export const api = new YukemuriClient(import.meta.env?.PUBLIC_API_URL ?? "/api");
+export const api = new YukemuriClient(resolveBaseURL());

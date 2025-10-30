@@ -25,6 +25,7 @@ __export(index_exports, {
 module.exports = __toCommonJS(index_exports);
 
 // src/client.ts
+var import_auth = require("@yukemuri/auth");
 var import_meta = {};
 var YukemuriClient = class {
   constructor(baseURL = "/api") {
@@ -37,8 +38,8 @@ var YukemuriClient = class {
       ...headers
     };
     if (auth) {
-      const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
-      if (token) finalHeaders["Authorization"] = `Bearer ${token}`;
+      const authHeader = import_auth.AuthManager.getAuthHeader();
+      Object.assign(finalHeaders, authHeader);
     }
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeout);
@@ -78,8 +79,20 @@ var YukemuriClient = class {
     return this.request(url, { method: "DELETE", auth });
   }
 };
-var _a;
-var api = new YukemuriClient(((_a = import_meta.env) == null ? void 0 : _a.PUBLIC_API_URL) ?? "/api");
+function resolveBaseURL() {
+  try {
+    const meta = import_meta;
+    if (meta?.env?.PUBLIC_API_URL) {
+      return meta.env.PUBLIC_API_URL;
+    }
+  } catch {
+  }
+  if (typeof process !== "undefined" && process.env?.PUBLIC_API_URL) {
+    return process.env.PUBLIC_API_URL;
+  }
+  return "/api";
+}
+var api = new YukemuriClient(resolveBaseURL());
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   YukemuriClient,

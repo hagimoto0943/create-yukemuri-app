@@ -52,8 +52,20 @@ var YukemuriClient = class {
     return this.request(url, { method: "DELETE", auth });
   }
 };
-var _a;
-var api = new YukemuriClient(((_a = import.meta.env) == null ? void 0 : _a.PUBLIC_API_URL) ?? "/api");
+function resolveBaseURL() {
+  try {
+    const meta = import.meta;
+    if (meta?.env?.PUBLIC_API_URL) {
+      return meta.env.PUBLIC_API_URL;
+    }
+  } catch {
+  }
+  if (typeof process !== "undefined" && process.env?.PUBLIC_API_URL) {
+    return process.env.PUBLIC_API_URL;
+  }
+  return "/api";
+}
+var api = new YukemuriClient(resolveBaseURL());
 export {
   YukemuriClient,
   api
