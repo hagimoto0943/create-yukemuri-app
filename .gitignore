@@ -1,4 +1,10 @@
 # node_modules
+packages/api/node_modules
+packages/web/node_modules
+packages/cli/node_modules
+packages/mobile/node_modules
+packages/auth/node_modules
+# build output
 node_modules/
 dist/
 .env
