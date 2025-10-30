@@ -1,7 +1,7 @@
 # node_modules
-packages/api/node_modules
-packages/api/dist
-packages/auth/node_modules
+packages/api/node_modules/
+packages/api/dist/
+packages/auth/node_modules/
 packages/auth/dist
 # build output
 node_modules/
