@@ -1,17 +1,8 @@
 import { ApiOptions } from "./types";
 import { AuthManager } from "@yukemuri/auth";
 
-const DEFAULT_CREDENTIALS: RequestCredentials = "omit";
-
 export class YukemuriClient {
-  constructor(
-    private baseURL: string = "/api",
-    private credentials: RequestCredentials = DEFAULT_CREDENTIALS
-  ) {}
-
-  setCredentials(mode: RequestCredentials) {
-    this.credentials = mode;
-  }
+  constructor(private baseURL: string = "/api",) {}
 
   private async request<T>(url: string, options: ApiOptions = {}): Promise<T> {
     const {
@@ -20,15 +11,24 @@ export class YukemuriClient {
       body,
       auth,
       timeout = 10000,
-      credentials = this.credentials,
+      credentials = "same-origin",
+      contentType,
     } = options;
 
-    const finalHeaders: Record<string, string> = {
-      "Content-Type": "application/json",
-      ...headers,
-    };
+    const methodUpper = method.toUpperCase();
+    const finalHeaders: Record<string, string> = { ...headers };
+    let serializedBody: string | undefined;
 
-    // 認証トークン自動付与（今後authモジュール連携予定）
+    if (body !== undefined && methodUpper !== "GET" && methodUpper !== "HEAD") {
+      serializedBody = JSON.stringify(body);
+    }
+
+    if (contentType) {
+      finalHeaders["Content-Type"] = contentType;
+    } else if (serializedBody) {
+      finalHeaders["Content-Type"] = "application/json";
+    }
+
     if (auth) {
       const authHeader = AuthManager.getAuthHeader();
       Object.assign(finalHeaders, authHeader);
@@ -38,9 +38,9 @@ export class YukemuriClient {
     const id = setTimeout(() => controller.abort(), timeout);
 
     const response = await fetch(`${this.baseURL}${url}`, {
-      method,
+      method: methodUpper,
       headers: finalHeaders,
-      body: body ? JSON.stringify(body) : undefined,
+      body: serializedBody,
       credentials,
       signal: controller.signal,
     }).finally(() => clearTimeout(id));
